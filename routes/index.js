@@ -3,21 +3,19 @@ const router = express.Router();
 const dbConnection = require('../dbConnection');
 const SUBJECT_LIMIT_COUNT=3;
 
-
 router.get('/api/subjects', function(req, res, next) {
   /*
     과목 데이터를 join하여 json형태로 리턴
   */
   let query = `
-              SELECT s.id as subjectId, s.title, s.grade, s.color, l.day, l.time
-              FROM Subject as s
-              LEFT JOIN Lesson as l ON s.id = l.subjectId
-              WHERE s.isEnable = 1
-              ORDER BY title ASC
+      SELECT s.id as subjectId, s.title, s.grade, s.color, l.day, l.time
+      FROM Subject as s
+      LEFT JOIN Lesson as l ON s.id = l.subjectId
+      WHERE s.isEnable = 1
+      ORDER BY title ASC
   `;
 
   dbConnection.query(query, (err, rows, fields)=>{
-    res.setHeader('Content-Type', 'applicaiton/json');
     if(err){
       console.error(err);
       return res.status(500).json({result:"error", message:err});
@@ -80,7 +78,5 @@ router.get('/api/subjects', function(req, res, next) {
     return res.status(200).json(subjectList);
   })
 });
-
-
 
 module.exports = router;
